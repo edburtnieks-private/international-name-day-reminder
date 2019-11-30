@@ -27,9 +27,7 @@ function htmlDev() {
 }
 
 function cssDev() {
-  return gulp
-    .src('src/vendor/css/**/*.css')
-    .pipe(gulp.dest('dist/css'));
+  return gulp.src('src/vendor/css/**/*.css').pipe(gulp.dest('dist/css'));
 }
 
 function sassDev() {
@@ -88,6 +86,13 @@ function jsProd() {
     .pipe(gulp.dest('dist/js'));
 }
 
+function assets() {
+  return gulp
+    .src('src/assets/**/*')
+    .pipe(gulp.dest('dist/assets'))
+    .pipe(browserSync.stream());
+}
+
 function cleanDist() {
   return del(['dist']);
 }
@@ -95,20 +100,18 @@ function cleanDist() {
 function watch() {
   gulp.watch('src/sass/**/*.scss', sassDev);
   gulp.watch('src/js/**/*.js', jsDev);
+  gulp.watch('src/assets/**/*', assets);
   gulp.watch('src/*.html', htmlDev);
 }
 
-exports.dev = gulp.series(
+const dev = gulp.series(
   cleanDist,
-  gulp.parallel(htmlDev, cssDev, sassDev, jsDev),
-  server
+  gulp.parallel(htmlDev, cssDev, sassDev, jsDev, assets)
 );
 
-exports.watch = gulp.series(
-  cleanDist,
-  gulp.parallel(htmlDev, cssDev, sassDev, jsDev),
-  gulp.parallel(server, watch)
-);
+exports.dev = gulp.series(dev, server);
+
+exports.watch = gulp.series(dev, gulp.parallel(server, watch));
 
 exports.prod = gulp.series(
   cleanDist,
