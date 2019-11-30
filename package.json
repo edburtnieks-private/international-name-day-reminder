@@ -1,0 +1,38 @@
+{
+  "name": "international-name-day-reminder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "dev": "gulp dev",
+    "watch": "gulp watch",
+    "prod": "gulp prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edburtnieks/international-name-day-reminder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edburtnieks/international-name-day-reminder/issues"
+  },
+  "homepage": "https://github.com/edburtnieks/international-name-day-reminder#readme",
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "browser-sync": "^2.26.7",
+    "del": "^5.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "node-sass": "^4.13.0"
+  }
+}
