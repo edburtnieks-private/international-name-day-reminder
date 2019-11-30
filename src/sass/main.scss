@@ -13,17 +13,19 @@ html {
 body {
   background-color: $c-primary-lighter;
   color: $c-black;
+  display: grid;
   font-family: 'Montserrat', sans-serif;
+  grid-template-rows: auto 1fr;
 }
 
 header {
   padding: 3rem 1rem;
+  grid-row: 1;
 }
 
 nav {
   ul {
     display: flex;
-    justify-content: flex-end;
     margin: 0;
   }
 
@@ -66,10 +68,9 @@ p {
 }
 
 main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: calc(100% - 240px);
+  align-self: center;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
 }
 
 .description {
