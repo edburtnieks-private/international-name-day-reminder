@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const browserSync = require('browser-sync').create();
 const htmlmin = require('gulp-htmlmin');
 const sourcemaps = require('gulp-sourcemaps');
+const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
@@ -23,6 +24,12 @@ function htmlDev() {
     .src('src/*.html')
     .pipe(gulp.dest('dist'))
     .pipe(browserSync.stream());
+}
+
+function cssDev() {
+  return gulp
+    .src('src/vendor/css/**/*.css')
+    .pipe(gulp.dest('dist/css'));
 }
 
 function sassDev() {
@@ -53,6 +60,13 @@ function htmlProd() {
     .src('src/*.html')
     .pipe(htmlmin({ collapseWhitespace: true }))
     .pipe(gulp.dest('dist'));
+}
+
+function cssProd() {
+  return gulp
+    .src('src/vendor/css/**/*.css')
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('dist/css'));
 }
 
 function sassProd() {
@@ -86,18 +100,18 @@ function watch() {
 
 exports.dev = gulp.series(
   cleanDist,
-  gulp.parallel(htmlDev, sassDev, jsDev),
+  gulp.parallel(htmlDev, cssDev, sassDev, jsDev),
   server
 );
 
 exports.watch = gulp.series(
   cleanDist,
-  gulp.parallel(htmlDev, sassDev, jsDev),
+  gulp.parallel(htmlDev, cssDev, sassDev, jsDev),
   gulp.parallel(server, watch)
 );
 
 exports.prod = gulp.series(
   cleanDist,
-  gulp.parallel(htmlProd, sassProd, jsProd),
+  gulp.parallel(htmlProd, cssProd, sassProd, jsProd),
   server
 );

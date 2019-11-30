@@ -29,6 +29,7 @@
     "eslint-plugin-import": "^2.18.2",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.2.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
