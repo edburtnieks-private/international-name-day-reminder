@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "gulp dev",
     "watch": "gulp watch",
-    "prod": "gulp prod"
+    "prod": "gulp prod",
+    "cy:open": "cypress open",
+    "percy": "percy exec -- cypress open"
   },
   "repository": {
     "type": "git",
@@ -22,7 +24,9 @@
   "devDependencies": {
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
+    "@percy/cypress": "^2.2.0",
     "browser-sync": "^2.26.7",
+    "cypress": "^3.7.0",
     "del": "^5.1.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
