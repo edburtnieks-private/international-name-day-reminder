@@ -1,0 +1,19 @@
+@import '../variables';
+
+@mixin tablet {
+  @media (min-width: $bp-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $bp-desktop) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media (min-width: $bp-desktop-large) {
+    @content;
+  }
+}
