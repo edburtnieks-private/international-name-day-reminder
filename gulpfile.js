@@ -16,6 +16,7 @@ function server() {
       baseDir: 'dist',
     },
     port: 3000,
+    notify: false,
   });
 }
 
@@ -37,7 +38,7 @@ function sassDev() {
     .pipe(
       sass({
         outputStyle: 'expanded',
-      }).on('error', sass.logError)
+      }).on('error', sass.logError),
     )
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/css'))
@@ -73,7 +74,7 @@ function sassProd() {
     .pipe(
       sass({
         outputStyle: 'compressed',
-      }).on('error', sass.logError)
+      }).on('error', sass.logError),
     )
     .pipe(gulp.dest('dist/css'));
 }
@@ -106,7 +107,7 @@ function watch() {
 
 const dev = gulp.series(
   cleanDist,
-  gulp.parallel(htmlDev, cssDev, sassDev, jsDev, assets)
+  gulp.parallel(htmlDev, cssDev, sassDev, jsDev, assets),
 );
 
 exports.dev = gulp.series(dev, server);
@@ -116,5 +117,5 @@ exports.watch = gulp.series(dev, gulp.parallel(server, watch));
 exports.prod = gulp.series(
   cleanDist,
   gulp.parallel(htmlProd, cssProd, sassProd, jsProd),
-  server
+  server,
 );
