@@ -1,4 +1,5 @@
-@import 'variables.scss';
+@import 'variables';
+@import 'mixins/breakpoints';
 
 html,
 body {
@@ -8,6 +9,10 @@ body {
 html {
   font-size: 16px;
   line-height: 24px;
+  
+  // Smaller font and line height
+  // font-size: 14px;
+  // line-height: 21px;
 }
 
 body {
@@ -19,8 +24,20 @@ body {
 }
 
 header {
-  padding: 3rem 1rem;
+  padding-bottom: 1.5rem;
+  padding-top: 1.5rem;
   grid-row: 1;
+  grid-column: 1 / -1;
+
+  @include tablet {
+    padding-bottom: 3rem;
+    padding-top: 3rem;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
 }
 
 nav {
@@ -31,7 +48,11 @@ nav {
 
   li {
     &:not(:last-of-type) {
-      padding-right: 5rem;
+      margin-right: 2.5rem;
+
+      @include tablet {
+        margin-right: 5rem;
+      }
     }
   }
 
@@ -39,8 +60,12 @@ nav {
     align-items: flex-start;
     color: $c-black;
     display: flex;
-    font-size: 1.25rem;
+    font-size: 1rem;
     text-decoration: none;
+
+    @include tablet {
+      font-size: 1.25rem;
+    }
 
     svg {
       margin-left: 0.5rem;
@@ -49,36 +74,71 @@ nav {
 }
 
 h1 {
-  font-size: 3rem;
-  line-height: 4.5rem;
-  margin: 0 0 5rem;
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  margin: 0 0 2.5rem;
+
+  @include tablet {
+    font-size: 3rem;
+    line-height: 4.5rem;
+    margin: 0 0 5rem;
+  }
 }
 
 p {
-  font-size: 1.5rem;
-  line-height: 2.25rem;
-  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin: 0;
+
+  &:not(:last-of-type) {
+    margin-bottom: 1.5rem;
+  }
+  
+  @include tablet {
+    font-size: 1.5rem;
+    line-height: 2.25rem;
+  }
 }
 
 .container {
-  margin: 0 auto;
+  padding: $mobile-spacing;
   max-width: 1366px;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin: 0 auto;
 }
 
 main {
-  align-self: center;
-  grid-column: 1 / -1;
-  grid-row: 1 / -1;
+  @include tablet {
+    align-self: center;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  @include tablet {
+    display: block;
+  }
 }
 
 .description {
   margin-bottom: 2rem;
   max-width: 600px;
+  flex-grow: 1;
 
   span {
     font-weight: $fw-bold;
+  }
+}
+
+.cta {
+  margin-bottom: 1.5rem;
+
+  @include tablet {
+    margin-bottom: 0;
   }
 }
 
@@ -88,12 +148,19 @@ a {
     background-color: $c-primary;
     border-radius: $br-base;
     color: $c-white;
-    display: inline-flex;
-    font-size: 2rem;
-    justify-content: space-between;
-    line-height: 3rem;
-    padding: 1rem 3.5rem;
+    display: flex;
+    font-size: 1.5rem;
+    justify-content: center;
+    line-height: 2.25rem;
+    padding: 1rem 0;
     text-decoration: none;
+
+    @include tablet {
+      display: inline-flex;
+      font-size: 2rem;
+      line-height: 3rem;
+      padding: 1rem 3.5rem;
+    }
 
     &:hover {
       background-color: $c-primary-dark;

@@ -1,3 +1,5 @@
+// Colors
+
 $c-white: #ffffff;
 $c-grey: #cecece;
 $c-black: #443f3d;
@@ -7,7 +9,21 @@ $c-primary-light: #e0f3ff;
 $c-primary: #0099ff;
 $c-primary-dark: #0078c8;
 
+// Font weight
+
 $fw-regular: 400;
 $fw-bold: 700;
 
+// Border radius
+
 $br-base: 0.25rem;
+
+// Breakpoints
+
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+$bp-desktop-large: 1366px;
+
+// Spacing
+
+$mobile-spacing: 0 1rem;
