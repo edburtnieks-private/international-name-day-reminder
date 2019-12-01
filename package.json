@@ -7,6 +7,7 @@
     "dev": "gulp dev",
     "watch": "gulp watch",
     "prod": "gulp prod",
+    "build": "gulp build",
     "cy:open": "cypress open",
     "percy": "percy exec -- cypress open"
   },

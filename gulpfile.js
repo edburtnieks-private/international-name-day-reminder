@@ -119,3 +119,8 @@ exports.prod = gulp.series(
   gulp.parallel(htmlProd, cssProd, sassProd, jsProd),
   server,
 );
+
+exports.build = gulp.series(
+  cleanDist,
+  gulp.parallel(htmlProd, cssProd, sassProd, jsProd),
+);
