@@ -6,6 +6,7 @@
   "globals": {
     "window": "readonly",
     "document": "readonly",
-    "fetch": "readonly"
+    "fetch": "readonly",
+    "localStorage": "readonly"
   }
 }

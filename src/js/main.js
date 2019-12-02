@@ -22,21 +22,29 @@ const setMonthAndYearText = (current, previous, next) => {
 };
 
 const getNames = async (days, month) => {
-  const names = {};
+  let names = {};
 
-  await Promise.all(days.map(async (day) => {
-    try {
-      const response = await getNameDayByDate(day, month);
-      const { data } = await response.json();
+  if (localStorage.getItem(`names-${month}`)) {
+    names = JSON.parse(localStorage.getItem(`names-${month}`));
+  } else {
+    await Promise.all(days.map(async (day) => {
+      try {
+        const response = await getNameDayByDate(day, month);
+        const { data } = await response.json();
 
-      if (!names[day]) {
-        names[day] = data.name_cz.split(',');
-        return names;
+        if (!names[day]) {
+          names[day] = data.name_cz.split(',');
+          return names;
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }));
+
+      return names;
+    }));
+
+    localStorage.setItem(`names-${month}`, JSON.stringify(names));
+  }
 
   return names;
 };
