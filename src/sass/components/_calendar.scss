@@ -1,0 +1,52 @@
+.previous-month-button,
+.next-month-button,
+.current-month {
+  font-size: 1.25rem;
+  min-width: 120px;
+}
+
+.previous-month-button,
+.next-month-button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.current-year,
+.current-month {
+  display: inline-block;
+}
+
+.current-year {
+  margin-right: 1rem;
+}
+
+.current-month {
+  font-weight: bold;
+  margin: 0 3.5rem;
+  text-align: center;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  .date-cell {
+    border-radius: $br-base;
+    border: 1px solid $c-primary-light;
+    margin-left: -1px;
+    margin-top: -1px;
+    min-height: 150px;
+
+    &:first-child {
+      grid-column: var(--first-week-day);
+    }
+  }
+
+  .date-number {
+    font-size: 0.75rem;
+    font-weight: $fw-bold;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+}

@@ -2,5 +2,9 @@
   "extends": "airbnb-base",
   "rules": {
     "linebreak-style": "off"
+  },
+  "globals": {
+    "window": "readonly",
+    "document": "readonly"
   }
 }
