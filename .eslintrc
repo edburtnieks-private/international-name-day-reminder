@@ -5,6 +5,7 @@
   },
   "globals": {
     "window": "readonly",
-    "document": "readonly"
+    "document": "readonly",
+    "fetch": "readonly"
   }
 }

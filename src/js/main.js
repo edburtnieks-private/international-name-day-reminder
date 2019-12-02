@@ -4,8 +4,10 @@ import {
   currentDate,
   previousMonthDate,
   nextMonthDate,
+  monthDays,
 } from './utils/date-helpers';
-import { createCalendar, changeMonth } from './utils/calendar-helpers';
+import { createCalendar, changeMonth } from './calendar';
+import { getNameDayByDate } from './api/name-day';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
@@ -19,17 +21,59 @@ const setMonthAndYearText = (current, previous, next) => {
   nextMonthButton.textContent = formatDateMonth(next);
 };
 
-createCalendar(currentDate);
+const getNames = async (days, month) => {
+  const names = {};
+
+  await Promise.all(days.map(async (day) => {
+    try {
+      const response = await getNameDayByDate(day, month);
+      const { data } = await response.json();
+
+      if (!names[day]) {
+        names[day] = data.name_cz.split(',');
+        return names;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }));
+
+  return names;
+};
+
+const setupCalendar = async (date) => {
+  const days = monthDays(date);
+  const firstWeekDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    1,
+  ).getUTCDay() + 1;
+  const names = await getNames(days, date.getMonth());
+
+  createCalendar(days, firstWeekDay, names);
+};
+
+setupCalendar(currentDate);
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
 
 previousMonthButton.addEventListener('click', () => {
-  const { newDate, newPreviousMonthDate, newNextMonthDate } = changeMonth({ isDecrement: true });
-  createCalendar(newDate);
+  const { newDate, newPreviousMonthDate, newNextMonthDate } = changeMonth(
+    currentDate,
+    previousMonthDate,
+    nextMonthDate,
+    { isDecrement: true },
+  );
+  setupCalendar(newDate);
   setMonthAndYearText(newDate, newPreviousMonthDate, newNextMonthDate);
 });
 
 nextMonthButton.addEventListener('click', () => {
-  const { newDate, newPreviousMonthDate, newNextMonthDate } = changeMonth({ isDecrement: false });
-  createCalendar(newDate);
+  const { newDate, newPreviousMonthDate, newNextMonthDate } = changeMonth(
+    currentDate,
+    previousMonthDate,
+    nextMonthDate,
+    { isDecrement: false },
+  );
+  setupCalendar(newDate);
   setMonthAndYearText(newDate, newPreviousMonthDate, newNextMonthDate);
 });
