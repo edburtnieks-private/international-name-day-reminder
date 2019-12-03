@@ -1,20 +1,64 @@
+import { getSavedNames, setSavedNames } from './api/name';
+import { addSavedNameListItem, removeSavedNameListItem } from './sidebar';
+
 const calendar = document.querySelector('#calendar');
 
-const createDateCellElement = async (day, names) => {
-  const dateCellElement = document.createElement('div');
+const toggleNameSave = (name) => {
+  const names = getSavedNames();
+
+  if (names.includes(name)) {
+    const index = names.indexOf(name);
+    if (index !== -1) names.splice(index, 1);
+    removeSavedNameListItem(name);
+  } else {
+    names.push(name);
+    addSavedNameListItem(name);
+  }
+
+  setSavedNames(names);
+};
+
+const createDayElement = (day) => {
   const dayElement = document.createElement('div');
 
   dayElement.textContent = day;
-  dayElement.className = 'date-number';
+  dayElement.className = 'day';
+
+  return dayElement;
+};
+
+const createNameWrapperElement = () => {
+  const nameWrapperElement = document.createElement('div');
+
+  nameWrapperElement.className = 'names';
+
+  return nameWrapperElement;
+};
+
+const createNameButton = (name) => {
+  const nameButton = document.createElement('button');
+
+  nameButton.textContent = name.trim();
+  nameButton.className = 'name-button';
+  nameButton.addEventListener('click', () => toggleNameSave(name));
+
+  return nameButton;
+};
+
+const createDateCellElement = async (day, names) => {
+  const dateCellElement = document.createElement('div');
+
+  const nameWrapperElement = createNameWrapperElement();
+  const dayElement = createDayElement(day);
 
   dateCellElement.className = 'date-cell';
   dateCellElement.appendChild(dayElement);
+  dateCellElement.appendChild(nameWrapperElement);
 
   if (names) {
     names.forEach((name) => {
-      const nameElement = document.createElement('div');
-      nameElement.textContent = name.trim();
-      dateCellElement.appendChild(nameElement);
+      const nameButton = createNameButton(name);
+      nameWrapperElement.appendChild(nameButton);
     });
   }
 

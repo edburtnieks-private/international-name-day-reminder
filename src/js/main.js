@@ -6,20 +6,16 @@ import {
   nextMonthDate,
   monthDays,
 } from './utils/date-helpers';
+import { isSavedNames } from './utils/name-helpers';
 import { createCalendar, changeMonth } from './calendar';
-import { getNameDayByDate } from './api/name-day';
+import { setSavedNamesTitle, createSavedNamesList } from './sidebar';
+import { getNameDayByDate, getSavedNames } from './api/name';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
 const previousMonthButton = document.querySelector('#previous-month-button');
 const nextMonthButton = document.querySelector('#next-month-button');
-
-const setMonthAndYearText = (current, previous, next) => {
-  currentYearElement.textContent = formatDateYear(current);
-  currentMonthElement.textContent = formatDateMonth(current);
-  previousMonthButton.textContent = formatDateMonth(previous);
-  nextMonthButton.textContent = formatDateMonth(next);
-};
+const sidebarElement = document.querySelector('#sidebar');
 
 const getNames = async (days, month) => {
   let names = {};
@@ -61,8 +57,23 @@ const setupCalendar = async (date) => {
   createCalendar(days, firstWeekDay, names);
 };
 
+const setMonthAndYearText = (current, previous, next) => {
+  currentYearElement.textContent = formatDateYear(current);
+  currentMonthElement.textContent = formatDateMonth(current);
+  previousMonthButton.textContent = formatDateMonth(previous);
+  nextMonthButton.textContent = formatDateMonth(next);
+};
+
+const savedNamesTitle = () => {
+  const title = isSavedNames ? 'Upcoming name days' : 'No upcoming name days';
+  return title;
+};
+
 setupCalendar(currentDate);
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
+
+setSavedNamesTitle(savedNamesTitle());
+createSavedNamesList(getSavedNames());
 
 previousMonthButton.addEventListener('click', () => {
   const { newDate, newPreviousMonthDate, newNextMonthDate } = changeMonth(

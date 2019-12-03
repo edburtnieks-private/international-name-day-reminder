@@ -165,3 +165,12 @@ svg {
   stroke-width: 0.15rem;
   stroke: $c-white;
 }
+
+.main-calendar-page {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+
+  .sidebar {
+    grid-column: 1;
+  }
+}

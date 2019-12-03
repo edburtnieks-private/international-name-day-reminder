@@ -6,10 +6,12 @@
 }
 
 .previous-month-button,
-.next-month-button {
+.next-month-button,
+.name-button {
   background-color: transparent;
   border: 0;
   cursor: pointer;
+  padding: 0;
 }
 
 .current-year,
@@ -30,6 +32,7 @@
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-column: 2;
 
   .date-cell {
     border-radius: $br-base;
@@ -43,10 +46,22 @@
     }
   }
 
-  .date-number {
+  .names {
+    margin: 0.5rem 1rem;
+  }
+
+  .day,
+  .name-button {
     font-size: 0.75rem;
+  }
+
+  .day {
     font-weight: $fw-bold;
     margin-top: 0.5rem;
     text-align: center;
+  }
+
+  .name-button {
+    display: block;
   }
 }
