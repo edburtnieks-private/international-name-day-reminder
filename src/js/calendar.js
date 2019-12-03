@@ -41,13 +41,18 @@ const createDayElement = (day) => {
   return dayElement;
 };
 
-const createDateCellElement = async (day, names) => {
+const createDateCellElement = (day) => {
   const dateCellElement = document.createElement('div');
   const dayElement = createDayElement(day);
 
   dateCellElement.className = 'date-cell';
   dateCellElement.appendChild(dayElement);
 
+  return dateCellElement;
+};
+
+export const addNamesToCalendar = (dateCellElement, names) => {
+  console.log(names);
   if (names) {
     const nameList = createNameList();
 
@@ -68,15 +73,15 @@ const createDateCellElement = async (day, names) => {
 
     dateCellElement.appendChild(nameList);
   }
-
-  return dateCellElement;
 };
 
-export const createCalendar = (days, firstWeekDay, names) => {
+export const createCalendar = (days, firstWeekDay) => {
   calendar.innerHTML = '';
+  const dateCellElements = [];
 
-  days.forEach(async (day) => {
-    const dateCellElement = await createDateCellElement(day, names[day]);
+  days.forEach((day) => {
+    const dateCellElement = createDateCellElement(day);
+    dateCellElements.push({ day, element: dateCellElement });
     calendar.appendChild(dateCellElement);
   });
 
@@ -84,6 +89,8 @@ export const createCalendar = (days, firstWeekDay, names) => {
     '--first-week-day',
     firstWeekDay,
   );
+
+  return dateCellElements;
 };
 
 export const changeMonth = (currentDate, previousMonthDate, nextMonthDate, { isDecrement }) => {

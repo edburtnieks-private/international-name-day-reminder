@@ -7,7 +7,7 @@ import {
   monthDays,
 } from './utils/date-helpers';
 import { savedNamesTitle } from './utils/name-helpers';
-import { createCalendar, changeMonth } from './calendar';
+import { createCalendar, changeMonth, addNamesToCalendar } from './calendar';
 import { setSavedNamesTitle, setSavedNamesListItems } from './sidebar';
 import {
   getNameDayByDate,
@@ -56,9 +56,13 @@ const setupCalendar = async (date) => {
     date.getMonth(),
     1,
   ).getUTCDay() + 1;
+
+  const dateCellElements = createCalendar(days, firstWeekDay);
   const names = await getNames(days, date.getMonth());
 
-  createCalendar(days, firstWeekDay, names);
+  dateCellElements.forEach((dateCellElement) => {
+    addNamesToCalendar(dateCellElement.element, names[dateCellElement.day]);
+  });
 };
 
 const setMonthAndYearText = (current, previous, next) => {
