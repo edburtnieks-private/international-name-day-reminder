@@ -1,34 +1,3 @@
-.previous-month-button,
-.next-month-button,
-.current-month {
-  font-size: 1.25rem;
-  min-width: 120px;
-}
-
-.previous-month-button,
-.next-month-button,
-.name-button {
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 0;
-}
-
-.current-year,
-.current-month {
-  display: inline-block;
-}
-
-.current-year {
-  margin-right: 1rem;
-}
-
-.current-month {
-  font-weight: bold;
-  margin: 0 3.5rem;
-  text-align: center;
-}
-
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
