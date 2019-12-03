@@ -1,6 +1,11 @@
 import { getSavedNames, setSavedNames } from './api/name';
 import { addSavedNameListItemToSidebar, removeSavedNameListItemFromSidebar } from './sidebar';
-import { createNameList, createNameListItem, createNameButton } from './name-list';
+import {
+  createNameList,
+  createNameListItem,
+  createNameButton,
+  updateNameListItemStyles,
+} from './name-list';
 
 const calendar = document.querySelector('#calendar');
 
@@ -10,11 +15,11 @@ const toggleNameSave = (nameListItem, name) => {
   if (names.includes(name)) {
     const index = names.indexOf(name);
     if (index !== -1) names.splice(index, 1);
-    nameListItem.classList.remove('saved');
+    updateNameListItemStyles(nameListItem, name);
     removeSavedNameListItemFromSidebar(name);
   } else {
     names.push(name);
-    nameListItem.classList.add('saved');
+    updateNameListItemStyles(nameListItem, name);
     addSavedNameListItemToSidebar(name);
   }
 

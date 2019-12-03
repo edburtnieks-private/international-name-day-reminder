@@ -1,5 +1,5 @@
 import { getSavedNames, setSavedNames } from './api/name';
-import { createNameListItem, createNameButton } from './name-list';
+import { createNameListItem, createNameButton, updateNameListItemStyles } from './name-list';
 import { encodedName } from './utils/name-helpers';
 
 const savedNamesTitle = document.querySelector('#saved-names-title');
@@ -17,9 +17,7 @@ const removeSavedName = (name) => {
     const index = names.indexOf(name);
     if (index !== -1) names.splice(index, 1);
 
-    const nameListItem = document.querySelector(`#calendar [data-name='${encodedName(name)}']`);
-    if (nameListItem) nameListItem.classList.remove('saved');
-
+    updateNameListItemStyles(null, name);
     removeSavedNameListItemFromSidebar(name);
     setSavedNames(names);
   }

@@ -50,3 +50,21 @@ export const createNameList = () => {
 
   return nameList;
 };
+
+export const updateNameListItemStyles = (nameListItem, name) => {
+  let item;
+
+  if (nameListItem) {
+    item = nameListItem;
+  } else {
+    item = document.querySelector(`#calendar [data-name='${encodedName(name)}']`);
+  }
+
+  if (item) {
+    if (item.classList.contains('saved')) {
+      item.classList.remove('saved');
+    } else {
+      item.classList.add('saved');
+    }
+  }
+};
