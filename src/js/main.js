@@ -6,9 +6,15 @@ import {
   nextMonthDate,
   monthDays,
 } from './utils/date-helpers';
+import { savedNamesTitle } from './utils/name-helpers';
 import { createCalendar, changeMonth } from './calendar';
 import { setSavedNamesTitle, setSavedNamesListItems } from './sidebar';
-import { getNameDayByDate, getSavedNames, setNamesInMonth, getNamesInMonth } from './api/name';
+import {
+  getNameDayByDate,
+  getSavedNames,
+  setNamesInMonth,
+  getNamesInMonth,
+} from './api/name';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
@@ -60,11 +66,6 @@ const setMonthAndYearText = (current, previous, next) => {
   currentMonthElement.textContent = formatDateMonth(current);
   previousMonthButton.textContent = formatDateMonth(previous);
   nextMonthButton.textContent = formatDateMonth(next);
-};
-
-const savedNamesTitle = () => {
-  const title = getSavedNames().length ? 'Upcoming name days' : 'No upcoming name days';
-  return title;
 };
 
 setupCalendar(currentDate);

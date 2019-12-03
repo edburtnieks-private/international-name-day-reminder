@@ -1,5 +1,10 @@
 import { getSavedNames, setSavedNames } from './api/name';
-import { addSavedNameListItemToSidebar, removeSavedNameListItemFromSidebar } from './sidebar';
+import { savedNamesTitle } from './utils/name-helpers';
+import {
+  addSavedNameListItemToSidebar,
+  removeSavedNameListItemFromSidebar,
+  setSavedNamesTitle,
+} from './sidebar';
 import {
   createNameList,
   createNameListItem,
@@ -24,6 +29,7 @@ const toggleNameSave = (nameListItem, name) => {
   }
 
   setSavedNames(names);
+  setSavedNamesTitle(savedNamesTitle());
 };
 
 const createDayElement = (day) => {

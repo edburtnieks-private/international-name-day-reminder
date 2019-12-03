@@ -1,13 +1,17 @@
 import { getSavedNames, setSavedNames } from './api/name';
 import { createNameListItem, createNameButton, updateNameListItemStyles } from './name-list';
-import { encodedName } from './utils/name-helpers';
+import { encodedName, savedNamesTitle } from './utils/name-helpers';
 
-const savedNamesTitle = document.querySelector('#saved-names-title');
+const savedNamesTitleElement = document.querySelector('#saved-names-title');
 const savedNamesList = document.querySelector('#saved-names-list');
 
 export const removeSavedNameListItemFromSidebar = (name) => {
   const itemToDelete = document.querySelector(`#saved-names-list [data-name='${encodedName(name)}']`);
   savedNamesList.removeChild(itemToDelete);
+};
+
+export const setSavedNamesTitle = (title) => {
+  savedNamesTitleElement.textContent = title;
 };
 
 const removeSavedName = (name) => {
@@ -20,11 +24,8 @@ const removeSavedName = (name) => {
     updateNameListItemStyles(null, name);
     removeSavedNameListItemFromSidebar(name);
     setSavedNames(names);
+    setSavedNamesTitle(savedNamesTitle());
   }
-};
-
-export const setSavedNamesTitle = (title) => {
-  savedNamesTitle.textContent = title;
 };
 
 export const addSavedNameListItemToSidebar = (name) => {
