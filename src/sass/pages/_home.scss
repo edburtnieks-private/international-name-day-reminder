@@ -1,0 +1,40 @@
+.home-page {
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  .main {
+    @include tablet {
+      align-self: center;
+      grid-column: 1 / -1;
+      grid-row: 1 / -1;
+    }
+  }
+  
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  
+    @include tablet {
+      display: block;
+    }
+  }
+
+  .description {
+    margin-bottom: 2rem;
+    max-width: 600px;
+    flex-grow: 1;
+  
+    span {
+      font-weight: $fw-bold;
+    }
+  }
+  
+  .cta {
+    margin-bottom: 1.5rem;
+  
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+}

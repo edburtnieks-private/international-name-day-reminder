@@ -1,0 +1,46 @@
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  .date-cell {
+    border-radius: $br-base;
+    border: 1px solid $c-primary-light;
+    margin-left: -1px;
+    margin-top: -1px;
+    min-height: 150px;
+
+    &:first-child {
+      grid-column: var(--first-week-day);
+    }
+  }
+
+  .name-list {
+    padding: 0.25rem 0;
+  }
+
+  .name-list-item {
+    &.saved {
+      .name-text {
+        font-weight: $fw-bold;
+      }
+    }
+  }
+  
+  .day {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  .name-button {
+    padding: 0.25rem 1rem;
+  }
+  
+  .name-text {
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 17px);
+  }
+}

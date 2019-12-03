@@ -4,6 +4,7 @@ const htmlmin = require('gulp-htmlmin');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
+const rollup = require('gulp-better-rollup');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
 const del = require('del');
@@ -47,8 +48,12 @@ function sassDev() {
 
 function jsDev() {
   return gulp
-    .src('src/js/**/*.js')
+    .src('src/js/main.js')
     .pipe(sourcemaps.init())
+    .pipe(rollup({
+      format: 'cjs',
+    }))
+    .pipe(babel())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'))
     .pipe(browserSync.stream());
@@ -81,7 +86,10 @@ function sassProd() {
 
 function jsProd() {
   return gulp
-    .src('src/js/**/*.js')
+    .src('src/js/main.js')
+    .pipe(rollup({
+      format: 'cjs',
+    }))
     .pipe(babel())
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));

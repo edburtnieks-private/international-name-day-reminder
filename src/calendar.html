@@ -4,8 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/sanitize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap"
+      rel="stylesheet"
+    />
     <title>Calendar | International Name Day Reminder</title>
   </head>
 
-  <body></body>
+  <body class="calendar-page">
+    <header class="page-header">
+      <div class="container container-full page-header-inner page-header-full">
+        <nav>
+          <ul>
+            <li>
+              <a class="logo" href="/">International Name Day Reminder</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div>
+          <span class="current-year" id="current-year"></span>
+          <button class="previous-month-button" id="previous-month-button"></button>
+          <span class="current-month" id="current-month"></span>
+          <button class="next-month-button" id="next-month-button"></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container container-full main-content">
+        <div id="sidebar" class="sidebar">
+          <h2 class="sidebar-section-title" id="saved-names-title"></h2>
+          <ul id="saved-names-list" class="name-list"></ul>
+        </div>
+        <div class="calendar" id="calendar"></div>
+      </div>
+    </main>
+  </body>
+
+  <script src="js/main.js"></script>
 </html>
