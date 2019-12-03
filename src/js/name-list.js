@@ -36,9 +36,10 @@ export const createNameButton = (name) => {
 
 export const createNameListItem = (name) => {
   const nameListItem = document.createElement('li');
+  const trimmedName = name.trim();
 
   nameListItem.className = 'name-list-item';
-  nameListItem.dataset.name = encodedName(name);
+  nameListItem.dataset.name = encodedName(trimmedName);
 
   return nameListItem;
 };
