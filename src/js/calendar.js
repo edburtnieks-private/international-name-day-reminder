@@ -1,5 +1,6 @@
 import { getSavedNames, setSavedNames } from './api/name';
 import { addSavedNameListItem, removeSavedNameListItem } from './sidebar';
+import { createNameList, createNameListItem, createNameButton } from './name-list';
 
 const calendar = document.querySelector('#calendar');
 
@@ -27,39 +28,27 @@ const createDayElement = (day) => {
   return dayElement;
 };
 
-const createNameWrapperElement = () => {
-  const nameWrapperElement = document.createElement('div');
-
-  nameWrapperElement.className = 'names';
-
-  return nameWrapperElement;
-};
-
-const createNameButton = (name) => {
-  const nameButton = document.createElement('button');
-
-  nameButton.textContent = name.trim();
-  nameButton.className = 'name-button';
-  nameButton.addEventListener('click', () => toggleNameSave(name));
-
-  return nameButton;
-};
-
 const createDateCellElement = async (day, names) => {
   const dateCellElement = document.createElement('div');
-
-  const nameWrapperElement = createNameWrapperElement();
   const dayElement = createDayElement(day);
 
   dateCellElement.className = 'date-cell';
   dateCellElement.appendChild(dayElement);
-  dateCellElement.appendChild(nameWrapperElement);
 
   if (names) {
+    const nameList = createNameList();
+
     names.forEach((name) => {
       const nameButton = createNameButton(name);
-      nameWrapperElement.appendChild(nameButton);
+      const nameListItem = createNameListItem();
+
+      nameButton.addEventListener('click', () => toggleNameSave(name));
+
+      nameListItem.appendChild(nameButton);
+      nameList.appendChild(nameListItem);
     });
+
+    dateCellElement.appendChild(nameList);
   }
 
   return dateCellElement;

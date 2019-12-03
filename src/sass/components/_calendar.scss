@@ -32,7 +32,6 @@
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-column: 2;
 
   .date-cell {
     border-radius: $br-base;
@@ -46,7 +45,7 @@
     }
   }
 
-  .names {
+  .name-list {
     margin: 0.5rem 1rem;
   }
 
@@ -59,9 +58,5 @@
     font-weight: $fw-bold;
     margin-top: 0.5rem;
     text-align: center;
-  }
-
-  .name-button {
-    display: block;
   }
 }

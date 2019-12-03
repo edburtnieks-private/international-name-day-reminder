@@ -8,14 +8,13 @@ import {
 } from './utils/date-helpers';
 import { isSavedNames } from './utils/name-helpers';
 import { createCalendar, changeMonth } from './calendar';
-import { setSavedNamesTitle, createSavedNamesList } from './sidebar';
+import { setSavedNamesTitle, setSavedNamesListItems } from './sidebar';
 import { getNameDayByDate, getSavedNames } from './api/name';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
 const previousMonthButton = document.querySelector('#previous-month-button');
 const nextMonthButton = document.querySelector('#next-month-button');
-const sidebarElement = document.querySelector('#sidebar');
 
 const getNames = async (days, month) => {
   let names = {};
@@ -73,7 +72,7 @@ setupCalendar(currentDate);
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
 
 setSavedNamesTitle(savedNamesTitle());
-createSavedNamesList(getSavedNames());
+setSavedNamesListItems(getSavedNames());
 
 previousMonthButton.addEventListener('click', () => {
   const { newDate, newPreviousMonthDate, newNextMonthDate } = changeMonth(

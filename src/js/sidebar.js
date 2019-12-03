@@ -1,4 +1,5 @@
 import { getSavedNames, setSavedNames } from './api/name';
+import { createNameListItem, createNameButton } from './name-list';
 
 const savedNamesTitle = document.querySelector('#saved-names-title');
 const savedNamesList = document.querySelector('#saved-names-list');
@@ -20,37 +21,23 @@ const removeSavedName = (name) => {
   }
 };
 
-const createNameButton = (name) => {
-  const nameButton = document.createElement('button');
-
-  nameButton.textContent = name.trim();
-  nameButton.className = 'name-button';
-  nameButton.addEventListener('click', () => removeSavedName(name));
-
-  return nameButton;
-};
-
-const createSavedNameListItem = (name) => {
-  const savedNameListItem = document.createElement('li');
-  const savedNameButton = createNameButton(name);
-
-  savedNameButton.textContent = name;
-  savedNameListItem.appendChild(savedNameButton);
-
-  return savedNameListItem;
-};
-
 export const setSavedNamesTitle = (title) => {
   savedNamesTitle.textContent = title;
 };
 
 export const addSavedNameListItem = (name) => {
-  const savedNameListItem = createSavedNameListItem(name);
+  const nameButton = createNameButton(name);
+  const savedNameListItem = createNameListItem();
+
+  nameButton.addEventListener('click', () => removeSavedName(name));
+
   savedNameListItem.dataset.name = name;
+
+  savedNameListItem.appendChild(nameButton);
   savedNamesList.appendChild(savedNameListItem);
 };
 
-export const createSavedNamesList = (names) => {
+export const setSavedNamesListItems = (names) => {
   names.forEach((name) => {
     addSavedNameListItem(name);
   });

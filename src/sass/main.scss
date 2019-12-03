@@ -3,6 +3,7 @@
 @import 'base/typography';
 @import 'components/header';
 @import 'components/calendar';
+@import 'components/sidebar';
 
 html,
 body {
@@ -153,12 +154,6 @@ a {
   }
 }
 
-.external-link-icon {
-  width: 1rem;
-  height: 1rem;
-  stroke: $c-grey;
-}
-
 svg {
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -166,11 +161,33 @@ svg {
   stroke: $c-white;
 }
 
+.external-link-icon {
+  width: 1rem;
+  height: 1rem;
+  stroke: $c-grey;
+}
+
+.save-icon {
+  width: 1rem;
+  height: 1rem;
+  stroke: $c-red;
+}
+
 .main-calendar-page {
   display: grid;
+  grid-gap: 4rem;
   grid-template-columns: 300px 1fr;
+}
 
-  .sidebar {
-    grid-column: 1;
-  }
+.name-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.name-button {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
