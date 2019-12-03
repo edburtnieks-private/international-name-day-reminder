@@ -16,3 +16,15 @@ export const getSavedNames = () => {
 
   return JSON.parse(localStorage.getItem('saved-names'));
 };
+
+export const setNamesInMonth = (names, month) => {
+  localStorage.setItem(`names-${month}`, JSON.stringify(names));
+};
+
+export const getNamesInMonth = (month) => {
+  if (localStorage.getItem(`names-${month}`) === null) {
+    return null;
+  }
+
+  return JSON.parse(localStorage.getItem(`names-${month}`));
+};

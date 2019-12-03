@@ -1,5 +1,7 @@
+import { encodedName } from './utils/name-helpers';
+
 const createSaveIcon = () => {
-  const saveIcon = document.createElement('svg');
+  const saveIcon = document.createElement('span');
 
   saveIcon.innerHTML = `
     <svg viewBox="0 0 24 24" fill="none" class="save-icon">
@@ -10,24 +12,41 @@ const createSaveIcon = () => {
   return saveIcon;
 };
 
+const createNameText = (name) => {
+  const nameText = document.createElement('span');
+
+  nameText.textContent = name;
+  nameText.className = 'name-text';
+
+  return nameText;
+};
+
 export const createNameButton = (name) => {
   const nameButton = document.createElement('button');
+  const nameText = createNameText(name);
   const saveIcon = createSaveIcon();
 
-  nameButton.textContent = name;
   nameButton.className = 'name-button';
-  nameButton.append(saveIcon);
+
+  nameButton.appendChild(nameText);
+  nameButton.appendChild(saveIcon);
 
   return nameButton;
 };
 
-export const createNameListItem = () => {
+export const createNameListItem = (name) => {
   const nameListItem = document.createElement('li');
+
+  nameListItem.className = 'name-list-item';
+  nameListItem.dataset.name = encodedName(name);
+
   return nameListItem;
 };
 
 export const createNameList = () => {
   const nameList = document.createElement('ul');
+
   nameList.className = 'name-list';
+
   return nameList;
 };

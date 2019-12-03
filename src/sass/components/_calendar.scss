@@ -15,17 +15,32 @@
   }
 
   .name-list {
-    margin: 0.5rem 1rem;
+    padding: 0.25rem 0;
   }
 
-  .day,
-  .name-button {
-    font-size: 0.75rem;
+  .name-list-item {
+    &.saved {
+      .name-text {
+        font-weight: $fw-bold;
+      }
+    }
   }
-
+  
   .day {
-    font-weight: $fw-bold;
+    font-size: 0.75rem;
     margin-top: 0.5rem;
     text-align: center;
+  }
+  
+  .name-button {
+    padding: 0.25rem 1rem;
+  }
+  
+  .name-text {
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 17px);
   }
 }

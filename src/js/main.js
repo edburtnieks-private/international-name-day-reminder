@@ -6,10 +6,9 @@ import {
   nextMonthDate,
   monthDays,
 } from './utils/date-helpers';
-import { isSavedNames } from './utils/name-helpers';
 import { createCalendar, changeMonth } from './calendar';
 import { setSavedNamesTitle, setSavedNamesListItems } from './sidebar';
-import { getNameDayByDate, getSavedNames } from './api/name';
+import { getNameDayByDate, getSavedNames, setNamesInMonth, getNamesInMonth } from './api/name';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
@@ -19,8 +18,8 @@ const nextMonthButton = document.querySelector('#next-month-button');
 const getNames = async (days, month) => {
   let names = {};
 
-  if (localStorage.getItem(`names-${month}`)) {
-    names = JSON.parse(localStorage.getItem(`names-${month}`));
+  if (getNamesInMonth(month)) {
+    names = getNamesInMonth(month);
   } else {
     await Promise.all(days.map(async (day) => {
       try {
@@ -38,7 +37,7 @@ const getNames = async (days, month) => {
       return names;
     }));
 
-    localStorage.setItem(`names-${month}`, JSON.stringify(names));
+    setNamesInMonth(names, month);
   }
 
   return names;
@@ -64,7 +63,7 @@ const setMonthAndYearText = (current, previous, next) => {
 };
 
 const savedNamesTitle = () => {
-  const title = isSavedNames ? 'Upcoming name days' : 'No upcoming name days';
+  const title = getSavedNames().length ? 'Upcoming name days' : 'No upcoming name days';
   return title;
 };
 

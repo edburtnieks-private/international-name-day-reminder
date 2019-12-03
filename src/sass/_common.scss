@@ -60,6 +60,10 @@ nav {
   padding: $mobile-spacing;
   max-width: 1366px;
   margin: 0 auto;
+
+  &.container-full {
+    max-width: 100%;
+  }
 }
 
 a {
@@ -131,9 +135,29 @@ svg {
   padding: 0;
 }
 
+.name-list-item {
+  &.saved {
+    svg {
+      fill: $c-red;
+    }
+  }
+}
+
 .name-button {
   align-items: center;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
   display: flex;
+  font-size: 0.875rem;
   justify-content: space-between;
   width: 100%;
+
+  &:hover {
+    background-color: $c-primary-light;
+  }
+
+  &:focus {
+    outline: 0.15rem solid $c-primary;
+  }
 }

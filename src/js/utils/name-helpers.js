@@ -1,3 +1,1 @@
-import { getSavedNames } from '../api/name';
-
-export const isSavedNames = () => getSavedNames().length;
+export const encodedName = (name) => encodeURIComponent(name);

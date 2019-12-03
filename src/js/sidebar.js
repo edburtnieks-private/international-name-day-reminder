@@ -1,11 +1,12 @@
 import { getSavedNames, setSavedNames } from './api/name';
 import { createNameListItem, createNameButton } from './name-list';
+import { encodedName } from './utils/name-helpers';
 
 const savedNamesTitle = document.querySelector('#saved-names-title');
 const savedNamesList = document.querySelector('#saved-names-list');
 
-export const removeSavedNameListItem = (name) => {
-  const itemToDelete = document.querySelector(`[data-name=${name}]`);
+export const removeSavedNameListItemFromSidebar = (name) => {
+  const itemToDelete = document.querySelector(`#saved-names-list [data-name='${encodedName(name)}']`);
   savedNamesList.removeChild(itemToDelete);
 };
 
@@ -16,7 +17,10 @@ const removeSavedName = (name) => {
     const index = names.indexOf(name);
     if (index !== -1) names.splice(index, 1);
 
-    removeSavedNameListItem(name);
+    const nameListItem = document.querySelector(`#calendar [data-name='${encodedName(name)}']`);
+    if (nameListItem) nameListItem.classList.remove('saved');
+
+    removeSavedNameListItemFromSidebar(name);
     setSavedNames(names);
   }
 };
@@ -25,20 +29,23 @@ export const setSavedNamesTitle = (title) => {
   savedNamesTitle.textContent = title;
 };
 
-export const addSavedNameListItem = (name) => {
+export const addSavedNameListItemToSidebar = (name) => {
   const nameButton = createNameButton(name);
-  const savedNameListItem = createNameListItem();
+  const savedNameListItem = createNameListItem(name);
 
   nameButton.addEventListener('click', () => removeSavedName(name));
 
-  savedNameListItem.dataset.name = name;
+  savedNameListItem.classList.add('saved');
 
   savedNameListItem.appendChild(nameButton);
   savedNamesList.appendChild(savedNameListItem);
+
+  return savedNameListItem;
 };
 
 export const setSavedNamesListItems = (names) => {
   names.forEach((name) => {
-    addSavedNameListItem(name);
+    const trimmedName = name.trim();
+    addSavedNameListItemToSidebar(trimmedName);
   });
 };

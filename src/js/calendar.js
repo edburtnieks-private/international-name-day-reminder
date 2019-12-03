@@ -1,19 +1,21 @@
 import { getSavedNames, setSavedNames } from './api/name';
-import { addSavedNameListItem, removeSavedNameListItem } from './sidebar';
+import { addSavedNameListItemToSidebar, removeSavedNameListItemFromSidebar } from './sidebar';
 import { createNameList, createNameListItem, createNameButton } from './name-list';
 
 const calendar = document.querySelector('#calendar');
 
-const toggleNameSave = (name) => {
+const toggleNameSave = (nameListItem, name) => {
   const names = getSavedNames();
 
   if (names.includes(name)) {
     const index = names.indexOf(name);
     if (index !== -1) names.splice(index, 1);
-    removeSavedNameListItem(name);
+    nameListItem.classList.remove('saved');
+    removeSavedNameListItemFromSidebar(name);
   } else {
     names.push(name);
-    addSavedNameListItem(name);
+    nameListItem.classList.add('saved');
+    addSavedNameListItemToSidebar(name);
   }
 
   setSavedNames(names);
@@ -39,10 +41,15 @@ const createDateCellElement = async (day, names) => {
     const nameList = createNameList();
 
     names.forEach((name) => {
-      const nameButton = createNameButton(name);
-      const nameListItem = createNameListItem();
+      const trimmedName = name.trim();
+      const nameButton = createNameButton(trimmedName);
+      const nameListItem = createNameListItem(name);
 
-      nameButton.addEventListener('click', () => toggleNameSave(name));
+      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName));
+
+      if (getSavedNames().includes(name)) {
+        nameListItem.classList.add('saved');
+      }
 
       nameListItem.appendChild(nameButton);
       nameList.appendChild(nameListItem);
