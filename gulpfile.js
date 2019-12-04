@@ -4,6 +4,7 @@ const htmlmin = require('gulp-htmlmin');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
 const rollup = require('gulp-better-rollup');
 const babel = require('rollup-plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
@@ -43,6 +44,7 @@ function sassDev() {
         outputStyle: 'expanded',
       }).on('error', sass.logError),
     )
+    .pipe(autoprefixer())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/css'))
     .pipe(browserSync.stream());
@@ -91,6 +93,7 @@ function sassProd() {
         outputStyle: 'compressed',
       }).on('error', sass.logError),
     )
+    .pipe(autoprefixer())
     .pipe(gulp.dest('dist/css'));
 }
 

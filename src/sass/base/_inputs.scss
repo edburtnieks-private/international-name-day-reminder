@@ -1,0 +1,28 @@
+.input-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.75rem;
+}
+
+select {
+  appearance: none;
+  background-color: transparent;
+  background: url('../assets/icons/chevron-down.svg') right center no-repeat;
+  border-color: $c-primary;
+  border-width: 0 0 2px 0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.25rem 2rem 0.25rem 0.5rem;
+
+  &:hover {
+    color: $c-primary-dark;
+  }
+
+  &:focus {
+    outline: 0.15rem solid $c-primary;
+    outline-offset: 0.15rem;
+  }
+}
