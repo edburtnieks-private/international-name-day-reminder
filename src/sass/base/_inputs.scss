@@ -25,4 +25,8 @@ select {
     outline: 0.15rem solid $c-primary;
     outline-offset: 0.15rem;
   }
+
+  option {
+    color: $c-black;
+  }
 }
