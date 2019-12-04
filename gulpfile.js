@@ -5,8 +5,10 @@ const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
 const rollup = require('gulp-better-rollup');
-const babel = require('gulp-babel');
-const uglify = require('gulp-uglify');
+const babel = require('rollup-plugin-babel');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+const uglify = require('rollup-plugin-uglify');
 const del = require('del');
 
 sass.compiler = require('node-sass');
@@ -50,10 +52,18 @@ function jsDev() {
   return gulp
     .src('src/js/main.js')
     .pipe(sourcemaps.init())
-    .pipe(rollup({
-      format: 'cjs',
-    }))
-    .pipe(babel())
+    .pipe(rollup(
+      {
+        plugins: [
+          commonjs(),
+          resolve(),
+          babel({ runtimeHelpers: true }),
+        ],
+      },
+      {
+        format: 'iife',
+      },
+    ))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'))
     .pipe(browserSync.stream());
@@ -87,11 +97,19 @@ function sassProd() {
 function jsProd() {
   return gulp
     .src('src/js/main.js')
-    .pipe(rollup({
-      format: 'cjs',
-    }))
-    .pipe(babel())
-    .pipe(uglify())
+    .pipe(rollup(
+      {
+        plugins: [
+          commonjs(),
+          resolve(),
+          babel({ runtimeHelpers: true }),
+          uglify.uglify(),
+        ],
+      },
+      {
+        format: 'iife',
+      },
+    ))
     .pipe(gulp.dest('dist/js'));
 }
 
@@ -113,22 +131,17 @@ function watch() {
   gulp.watch('src/*.html', htmlDev);
 }
 
-const dev = gulp.series(
+const devBuild = gulp.series(
   cleanDist,
   gulp.parallel(htmlDev, cssDev, sassDev, jsDev, assets),
 );
 
-exports.dev = gulp.series(dev, server);
-
-exports.watch = gulp.series(dev, gulp.parallel(server, watch));
-
-exports.prod = gulp.series(
+const prodBuild = gulp.series(
   cleanDist,
-  gulp.parallel(htmlProd, cssProd, sassProd, jsProd),
-  server,
+  gulp.parallel(htmlProd, cssProd, sassProd, jsProd, assets),
 );
 
-exports.build = gulp.series(
-  cleanDist,
-  gulp.parallel(htmlProd, cssProd, sassProd, jsProd),
-);
+exports.dev = gulp.series(devBuild, server);
+exports.watch = gulp.series(devBuild, gulp.parallel(server, watch));
+exports.prod = gulp.series(prodBuild, server);
+exports.build = prodBuild;
