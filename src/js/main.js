@@ -64,34 +64,31 @@ const addOptionsToSelect = (options, select) => {
 
 const setupCalendar = (date) => {
   const month = date.getMonth();
-  const days = monthDays(month);
-  const firstWeekDay = new Date(
-    date.getFullYear(),
-    month,
-    1,
-  ).getUTCDay() + 1;
-  dateCellElements = createCalendar(days, firstWeekDay);
+  const year = date.getFullYear();
+  const days = monthDays(date);
+  const firstWeekDay = new Date(year, month, 1).getUTCDay() + 1;
   const allNames = {};
-  let countries = [];
+
+  dateCellElements = createCalendar(days, firstWeekDay);
 
   dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
     const names = await getNames(month, day);
 
-    if (names[1]) {
-      if (!getCountries().length) {
-        countries = Object.keys(names[1]);
+    if (names) {
+      if (!getCountries()) {
+        const countries = Object.keys(names[1]);
         setCountries(countries);
       }
-    }
 
-    addNamesToDateCell(dateCellElement.element, names[day], countryFilterSelect.value);
+      addNamesToDateCell(dateCellElement.element, names[day], countryFilterSelect.value);
 
-    if (!getNamesInMonth(date.getMonth())) {
-      allNames[day] = names[day];
+      if (!getNamesInMonth(month)) {
+        allNames[day] = names[day];
 
-      if (Object.keys(allNames).length === days.length) {
-        setNamesInMonth(allNames, date.getMonth());
+        if (Object.keys(allNames).length === days.length) {
+          setNamesInMonth(allNames, month);
+        }
       }
     }
   });
@@ -107,7 +104,6 @@ const setMonthAndYearText = (current, previous, next) => {
 setupCalendar(currentDate);
 addOptionsToSelect(getCountries(), countryFilterSelect);
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
-
 setSavedNamesTitle(savedNamesTitle());
 setSavedNamesListItems(getSavedNames());
 

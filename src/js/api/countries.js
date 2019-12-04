@@ -4,7 +4,7 @@ export const setCountries = (countries) => {
 
 export const getCountries = () => {
   if (localStorage.getItem('countries') === null) {
-    return [];
+    return null;
   }
 
   return JSON.parse(localStorage.getItem('countries'));

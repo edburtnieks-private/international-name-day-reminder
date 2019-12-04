@@ -62,24 +62,26 @@ export const addNamesToDateCell = (dateCellElement, names, country) => {
     nameList = createNameList();
   }
 
-  const nameArray = names[country].split(',');
+  if (names) {
+    const nameArray = names[country].split(',');
 
-  nameArray.forEach((name) => {
-    const trimmedName = name.trim();
-    const nameButton = createNameButton(trimmedName);
-    const nameListItem = createNameListItem(name);
+    nameArray.forEach((name) => {
+      const trimmedName = name.trim();
+      const nameButton = createNameButton(trimmedName);
+      const nameListItem = createNameListItem(name);
 
-    nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName));
+      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName));
 
-    if (getSavedNames().includes(name)) {
-      nameListItem.classList.add('saved');
-    }
+      if (getSavedNames().includes(name)) {
+        nameListItem.classList.add('saved');
+      }
 
-    nameListItem.appendChild(nameButton);
-    nameList.appendChild(nameListItem);
-  });
+      nameListItem.appendChild(nameButton);
+      nameList.appendChild(nameListItem);
+    });
 
-  dateCellElement.appendChild(nameList);
+    dateCellElement.appendChild(nameList);
+  }
 };
 
 export const createCalendar = (days, firstWeekDay) => {
