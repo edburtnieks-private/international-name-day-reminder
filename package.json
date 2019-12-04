@@ -24,6 +24,7 @@
   "homepage": "https://github.com/edburtnieks/international-name-day-reminder#readme",
   "devDependencies": {
     "@babel/core": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "@percy/cypress": "^2.2.0",
     "browser-sync": "^2.26.7",
@@ -33,15 +34,20 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
     "gulp-better-rollup": "^4.0.1",
     "gulp-clean-css": "^4.2.0",
     "gulp-htmlmin": "^5.0.1",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
     "node-sass": "^4.13.0",
-    "rollup": "^1.27.7"
+    "rollup": "^1.27.7",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-uglify": "^6.0.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/runtime": "^7.7.4",
+    "@babel/runtime-corejs3": "^7.7.4"
+  }
 }

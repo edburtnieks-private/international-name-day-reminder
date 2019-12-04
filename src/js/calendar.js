@@ -51,8 +51,7 @@ const createDateCellElement = (day) => {
   return dateCellElement;
 };
 
-export const addNamesToCalendar = (dateCellElement, names) => {
-  console.log(names);
+export const addNamesToDateCell = (dateCellElement, names) => {
   if (names) {
     const nameList = createNameList();
 

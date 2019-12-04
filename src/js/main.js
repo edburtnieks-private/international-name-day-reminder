@@ -7,7 +7,7 @@ import {
   monthDays,
 } from './utils/date-helpers';
 import { savedNamesTitle } from './utils/name-helpers';
-import { createCalendar, changeMonth, addNamesToCalendar } from './calendar';
+import { createCalendar, changeMonth, addNamesToDateCell } from './calendar';
 import { setSavedNamesTitle, setSavedNamesListItems } from './sidebar';
 import {
   getNameDayByDate,
@@ -21,30 +21,25 @@ const currentMonthElement = document.querySelector('#current-month');
 const previousMonthButton = document.querySelector('#previous-month-button');
 const nextMonthButton = document.querySelector('#next-month-button');
 
-const getNames = async (days, month) => {
+const getNames = async (day, month) => {
   let names = {};
 
   if (getNamesInMonth(month)) {
     names = getNamesInMonth(month);
   } else {
-    await Promise.all(days.map(async (day) => {
-      try {
-        const response = await getNameDayByDate(day, month);
-        const { data } = await response.json();
+    try {
+      const response = await getNameDayByDate(day, month);
+      const { data } = await response.json();
 
-        if (!names[day]) {
-          names[day] = data.name_cz.split(',');
-          return names;
-        }
-      } catch (error) {
-        console.error(error);
+      if (!names[day]) {
+        names[day] = data[0].namedays.cz.split(',');
       }
-
-      return names;
-    }));
-
-    setNamesInMonth(names, month);
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  console.log(names);
 
   return names;
 };
@@ -56,12 +51,22 @@ const setupCalendar = async (date) => {
     date.getMonth(),
     1,
   ).getUTCDay() + 1;
-
   const dateCellElements = createCalendar(days, firstWeekDay);
-  const names = await getNames(days, date.getMonth());
+  const allNames = {};
 
-  dateCellElements.forEach((dateCellElement) => {
-    addNamesToCalendar(dateCellElement.element, names[dateCellElement.day]);
+  await dateCellElements.forEach(async (dateCellElement) => {
+    const { day } = dateCellElement;
+    const names = await getNames(day, date.getMonth());
+
+    addNamesToDateCell(dateCellElement.element, names[day]);
+
+    if (!getNamesInMonth(date.getMonth())) {
+      allNames[day] = names[day];
+
+      if (Object.keys(allNames).length === days.length) {
+        setNamesInMonth(allNames, date.getMonth());
+      }
+    }
   });
 };
 
