@@ -22,26 +22,22 @@ const previousMonthButton = document.querySelector('#previous-month-button');
 const nextMonthButton = document.querySelector('#next-month-button');
 
 const getNames = async (day, month) => {
-  let names = {};
+  let allNames = {};
 
   if (getNamesInMonth(month)) {
-    names = getNamesInMonth(month);
+    allNames = getNamesInMonth(month);
   } else {
     try {
       const response = await getNameDayByDate(day, month);
       const { data } = await response.json();
-
-      if (!names[day]) {
-        names[day] = data[0].namedays.cz.split(',');
-      }
+      const entries = Object.entries(data[0].namedays);
+      allNames[day] = entries;
     } catch (error) {
       console.error(error);
     }
   }
 
-  console.log(names);
-
-  return names;
+  return allNames;
 };
 
 const setupCalendar = async (date) => {
