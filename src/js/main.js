@@ -21,23 +21,24 @@ const currentMonthElement = document.querySelector('#current-month');
 const previousMonthButton = document.querySelector('#previous-month-button');
 const nextMonthButton = document.querySelector('#next-month-button');
 
-const getNames = async (day, month) => {
-  let allNames = {};
+const getNames = async (country, month, day) => {
+  let names = {};
 
   if (getNamesInMonth(month)) {
-    allNames = getNamesInMonth(month);
+    names = getNamesInMonth(month);
   } else {
     try {
-      const response = await getNameDayByDate(day, month);
+      const response = await getNameDayByDate(country, month, day);
       const { data } = await response.json();
-      const entries = Object.entries(data[0].namedays);
-      allNames[day] = entries;
+      names[day] = data[0].namedays[country].split(',');
     } catch (error) {
       console.error(error);
     }
   }
 
-  return allNames;
+  console.log(names);
+
+  return names;
 };
 
 const setupCalendar = async (date) => {
@@ -52,7 +53,7 @@ const setupCalendar = async (date) => {
 
   await dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
-    const names = await getNames(day, date.getMonth());
+    const names = await getNames('us', date.getMonth(), day);
 
     addNamesToDateCell(dateCellElement.element, names[day]);
 

@@ -51,33 +51,27 @@ const createDateCellElement = (day) => {
   return dateCellElement;
 };
 
-const addNamesToDateCellCountryList = (nameList, countryNames) => {
-  const names = countryNames[1].split(',');
+export const addNamesToDateCell = (dateCellElement, names) => {
+  if (names) {
+    const nameList = createNameList();
 
-  names.forEach((name) => {
-    const trimmedName = name.trim();
-    const nameButton = createNameButton(trimmedName);
-    const nameListItem = createNameListItem(name);
+    names.forEach((name) => {
+      const trimmedName = name.trim();
+      const nameButton = createNameButton(trimmedName);
+      const nameListItem = createNameListItem(name);
 
-    nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName));
+      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName));
 
-    if (getSavedNames().includes(name)) {
-      nameListItem.classList.add('saved');
-    }
+      if (getSavedNames().includes(name)) {
+        nameListItem.classList.add('saved');
+      }
 
-    nameListItem.appendChild(nameButton);
-    nameList.appendChild(nameListItem);
-  });
-};
+      nameListItem.appendChild(nameButton);
+      nameList.appendChild(nameListItem);
+    });
 
-export const addNamesToDateCell = (dateCellElement, nameList) => {
-  nameList.forEach((names) => {
-    const nameListElement = createNameList();
-
-    addNamesToDateCellCountryList(nameListElement, names);
-
-    dateCellElement.appendChild(nameListElement);
-  });
+    dateCellElement.appendChild(nameList);
+  }
 };
 
 export const createCalendar = (days, firstWeekDay) => {
