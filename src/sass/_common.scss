@@ -129,13 +129,17 @@ svg {
   stroke: $c-red;
 }
 
-.name-list {
+.name-list,
+.country-specific-name-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
 .name-list-item {
+  align-items: center;
+  display: flex;
+
   &.saved {
     svg {
       fill: $c-red;
@@ -159,5 +163,10 @@ svg {
 
   &:focus {
     outline: 0.15rem solid $c-primary;
+  }
+
+  .name-text {
+    flex: 1;
+    text-align: left;
   }
 }

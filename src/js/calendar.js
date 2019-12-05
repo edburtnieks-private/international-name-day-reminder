@@ -1,8 +1,8 @@
 import { getSavedNames, setSavedNames } from './api/name';
 import { savedNamesTitle } from './utils/name-helpers';
 import {
-  addSavedNameListItemToSidebar,
-  removeSavedNameListItemFromSidebar,
+  addSavedNameToCountrySpecificList,
+  removeSavedNameFromCountrySpecificList,
   setSavedNamesTitle,
 } from './sidebar';
 import {
@@ -14,21 +14,30 @@ import {
 
 const calendar = document.querySelector('#calendar');
 
-const toggleNameSave = (nameListItem, name) => {
+const toggleNameSave = (nameListItem, name, country) => {
   const names = getSavedNames();
 
-  if (names.includes(name)) {
-    const index = names.indexOf(name);
-    if (index !== -1) names.splice(index, 1);
-    updateNameListItemStyles(nameListItem, name);
-    removeSavedNameListItemFromSidebar(name);
+  if (country in names) {
+    if (names[country].includes(name)) {
+      const index = names[country].indexOf(name);
+      if (index !== -1) names[country].splice(index, 1);
+
+      if (!names[country].length) {
+        delete names[country];
+      }
+      
+      removeSavedNameFromCountrySpecificList(name, country);
+    } else {
+      names[country].push(name);
+      addSavedNameToCountrySpecificList(name, country);
+    }
   } else {
-    names.push(name);
-    updateNameListItemStyles(nameListItem, name);
-    addSavedNameListItemToSidebar(name);
+    names[country] = [name];
+    addSavedNameToCountrySpecificList(name, country);
   }
 
-  setSavedNames(names);
+  updateNameListItemStyles(nameListItem, name);
+  setSavedNames(names, country);
   setSavedNamesTitle(savedNamesTitle());
 };
 
@@ -70,11 +79,15 @@ export const addNamesToDateCell = (dateCellElement, names, country) => {
       const nameButton = createNameButton(trimmedName);
       const nameListItem = createNameListItem(name);
 
-      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName));
+      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName, country));
 
-      if (getSavedNames().includes(name)) {
-        nameListItem.classList.add('saved');
-      }
+      const countries = Object.keys(getSavedNames());
+
+      countries.forEach((savedCountry) => {
+        if (getSavedNames()[savedCountry].includes(name)) {
+          nameListItem.classList.add('saved');
+        }
+      });
 
       nameListItem.appendChild(nameButton);
       nameList.appendChild(nameListItem);

@@ -1,34 +1,40 @@
 export const countryFullName = (countries) => {
-  switch(countries) {
+  switch (countries) {
     case 'at':
       return 'Austria';
     case 'dk':
-        return 'Denmark';
+      return 'Denmark';
     case 'fr':
-        return 'France';
+      return 'France';
     case 'it':
-        return 'Italy';
+      return 'Italy';
     case 'sk':
-        return 'Slovakia';
+      return 'Slovakia';
     case 'cz':
-        return 'Czechia';
+      return 'Czechia';
     case 'es':
-        return 'Spain';
+      return 'Spain';
     case 'hr':
-        return 'Croatia';
+      return 'Croatia';
     case 'pl':
-        return 'Poland';
+      return 'Poland';
     case 'us':
-        return 'United States of America';
+      return 'United States of America';
     case 'de':
-        return 'Germany';
+      return 'Germany';
     case 'fi':
-        return 'Finland';
+      return 'Finland';
     case 'hu':
-        return 'Hungary';
+      return 'Hungary';
     case 'se':
-        return 'Sweden';
+      return 'Sweden';
     default:
-      return 'Unknown country name'
+      return 'Unknown country name';
   }
+};
+
+export const createCountryFlag = (country) => {
+  const countryFlag = document.createElement('span');
+  countryFlag.className = `flag-icon flag-icon-${country}`;
+  return countryFlag;
 };
