@@ -7,6 +7,7 @@ import {
   monthDays,
 } from './utils/date-helpers';
 import { savedNamesTitle } from './utils/name-helpers';
+import { countryFullName } from './utils/country-helpers';
 import {
   createCalendar,
   changeMonth,
@@ -47,18 +48,18 @@ const getNames = async (month, day) => {
   return names;
 };
 
-const createSelectOption = (select, option) => {
+const createSelectOption = (select, option, displayText) => {
   const optionElement = document.createElement('option');
 
   optionElement.value = option;
-  optionElement.textContent = option;
+  optionElement.textContent = displayText;
 
   select.appendChild(optionElement);
 };
 
-const addOptionsToSelect = (options, select) => {
-  options.forEach((option) => {
-    createSelectOption(select, option);
+const addCountriesToSelect = (countries) => {
+  countries.forEach((country) => {
+    createSelectOption(countryFilterSelect, country, countryFullName(country));
   });
 };
 
@@ -102,7 +103,7 @@ const setMonthAndYearText = (current, previous, next) => {
 };
 
 setupCalendar(currentDate);
-addOptionsToSelect(getCountries(), countryFilterSelect);
+addCountriesToSelect(getCountries());
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
 setSavedNamesTitle(savedNamesTitle());
 setSavedNamesListItems(getSavedNames());
