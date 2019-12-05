@@ -9,3 +9,15 @@ export const getCountries = () => {
 
   return JSON.parse(localStorage.getItem('countries'));
 };
+
+export const setSelectedCountry = (country) => {
+  localStorage.setItem('selected-country', country);
+};
+
+export const getSelectedCountry = () => {
+  if (localStorage.getItem('selected-country') === null) {
+    return null;
+  }
+  
+  return localStorage.getItem('selected-country');
+};

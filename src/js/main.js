@@ -20,7 +20,7 @@ import {
   setNamesInMonth,
   getNamesInMonth,
 } from './api/name';
-import { getCountries, setCountries } from './api/countries';
+import { getCountries, setCountries, getSelectedCountry, setSelectedCountry } from './api/countries';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
@@ -63,9 +63,15 @@ const addFlagToCountrySelect = (country) => {
 
 const addCountriesToSelect = (countries) => {
   countries.forEach((country) => {
-    addFlagToCountrySelect(countryFilterSelect.value);
+    addFlagToCountrySelect(getSelectedCountry() || countryFilterSelect.value);
     createSelectOption(countryFilterSelect, country, countryFullName(country));
   });
+};
+
+const setDefaultCountry = () => {
+  if (getSelectedCountry()) {
+    countryFilterSelect.value = getSelectedCountry();
+  }
 };
 
 const setupCalendar = (date) => {
@@ -109,6 +115,7 @@ const setMonthAndYearText = (current, previous, next) => {
 
 setupCalendar(currentDate);
 addCountriesToSelect(getCountries());
+setDefaultCountry();
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
 setSavedNamesTitle(savedNamesTitle());
 setSavedNamesListItems(getSavedNames());
@@ -139,7 +146,8 @@ countryFilterSelect.addEventListener('change', (event) => {
   const country = event.target.value;
   const month = currentDate.getMonth();
 
-  addFlagToCountrySelect(countryFilterSelect.value);
+  addFlagToCountrySelect(country);
+  setSelectedCountry(country);
 
   dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
