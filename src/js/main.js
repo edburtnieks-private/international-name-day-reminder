@@ -68,9 +68,9 @@ const addCountriesToSelect = (countries) => {
   });
 };
 
-const setDefaultCountry = () => {
-  if (getSelectedCountry()) {
-    countryFilterSelect.value = getSelectedCountry();
+const setDefaultCountry = (selectedCountry) => {
+  if (selectedCountry) {
+    countryFilterSelect.value = selectedCountry;
   }
 };
 
@@ -115,7 +115,7 @@ const setMonthAndYearText = (current, previous, next) => {
 
 setupCalendar(currentDate);
 addCountriesToSelect(getCountries());
-setDefaultCountry();
+setDefaultCountry(getSelectedCountry());
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
 setSavedNamesTitle(savedNamesTitle());
 setSavedNamesListItems(getSavedNames());
