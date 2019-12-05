@@ -57,8 +57,13 @@ const createSelectOption = (select, option, displayText) => {
   select.appendChild(optionElement);
 };
 
+const addFlagToCountrySelect = (country) => {
+  countryFilterSelect.className = `flag-icon-background flag-icon-${country}`;
+};
+
 const addCountriesToSelect = (countries) => {
   countries.forEach((country) => {
+    addFlagToCountrySelect(countryFilterSelect.value);
     createSelectOption(countryFilterSelect, country, countryFullName(country));
   });
 };
@@ -133,6 +138,8 @@ nextMonthButton.addEventListener('click', () => {
 countryFilterSelect.addEventListener('change', (event) => {
   const country = event.target.value;
   const month = currentDate.getMonth();
+
+  addFlagToCountrySelect(countryFilterSelect.value);
 
   dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
