@@ -74,7 +74,7 @@ const setDefaultCountry = (selectedCountry) => {
   }
 };
 
-const setupCalendar = (date) => {
+const setupCalendar = async (date) => {
   const month = date.getMonth();
   const year = date.getFullYear();
   const days = monthDays(date);
@@ -83,24 +83,25 @@ const setupCalendar = (date) => {
 
   dateCellElements = createCalendar(days, firstWeekDay);
 
-  dateCellElements.forEach(async (dateCellElement) => {
+  await dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
     const names = await getNames(month, day);
 
-    if (names) {
+    if (day === 1) {
       if (!getCountries()) {
-        const countries = Object.keys(names[1]);
+        const countries = Object.keys(names[day]);
+        addCountriesToSelect(countries);
         setCountries(countries);
       }
+    }
 
-      addNamesToDateCell(dateCellElement.element, names[day], countryFilterSelect.value);
+    addNamesToDateCell(dateCellElement.element, names[day], getSelectedCountry() || countryFilterSelect.value);
 
-      if (!getNamesInMonth(month)) {
-        allNames[day] = names[day];
+    if (!getNamesInMonth(month)) {
+      allNames[day] = names[day];
 
-        if (Object.keys(allNames).length === days.length) {
-          setNamesInMonth(allNames, month);
-        }
+      if (Object.keys(allNames).length === days.length) {
+        setNamesInMonth(allNames, month);
       }
     }
   });
@@ -114,7 +115,11 @@ const setMonthAndYearText = (current, previous, next) => {
 };
 
 setupCalendar(currentDate);
-addCountriesToSelect(getCountries());
+
+if (getCountries()) {
+  addCountriesToSelect(getCountries());
+}
+
 setDefaultCountry(getSelectedCountry());
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
 setSavedNamesTitle(savedNamesTitle());

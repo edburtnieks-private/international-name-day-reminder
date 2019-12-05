@@ -62,7 +62,7 @@ export const addNamesToDateCell = (dateCellElement, names, country) => {
     nameList = createNameList();
   }
 
-  if (names) {
+  if (names[country]) {
     const nameArray = names[country].split(',');
 
     nameArray.forEach((name) => {
