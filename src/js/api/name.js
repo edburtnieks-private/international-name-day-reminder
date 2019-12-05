@@ -1,6 +1,6 @@
 const API = 'https://api.abalin.net/';
 
-export const getNameDayByDate = async (day, month) => {
+export const getNameDayByDate = async (month, day) => {
   const response = await fetch(`${API}/namedays?&month=${month + 1}&day=${day}`);
   return response;
 };

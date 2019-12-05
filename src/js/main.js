@@ -7,7 +7,12 @@ import {
   monthDays,
 } from './utils/date-helpers';
 import { savedNamesTitle } from './utils/name-helpers';
-import { createCalendar, changeMonth, addNamesToDateCell } from './calendar';
+import { countryFullName } from './utils/country-helpers';
+import {
+  createCalendar,
+  changeMonth,
+  addNamesToDateCell,
+} from './calendar';
 import { setSavedNamesTitle, setSavedNamesListItems } from './sidebar';
 import {
   getNameDayByDate,
@@ -15,56 +20,87 @@ import {
   setNamesInMonth,
   getNamesInMonth,
 } from './api/name';
+import { getCountries, setCountries, getSelectedCountry, setSelectedCountry } from './api/countries';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
 const previousMonthButton = document.querySelector('#previous-month-button');
 const nextMonthButton = document.querySelector('#next-month-button');
+const countryFilterSelect = document.querySelector('#country-filter');
 
-const getNames = async (day, month) => {
+let dateCellElements;
+
+const getNames = async (month, day) => {
   let names = {};
 
   if (getNamesInMonth(month)) {
     names = getNamesInMonth(month);
   } else {
     try {
-      const response = await getNameDayByDate(day, month);
+      const response = await getNameDayByDate(month, day);
       const { data } = await response.json();
-
-      if (!names[day]) {
-        names[day] = data[0].namedays.cz.split(',');
-      }
+      names[day] = data[0].namedays;
     } catch (error) {
       console.error(error);
     }
   }
 
-  console.log(names);
-
   return names;
 };
 
-const setupCalendar = async (date) => {
+const createSelectOption = (select, option, displayText) => {
+  const optionElement = document.createElement('option');
+
+  optionElement.value = option;
+  optionElement.textContent = displayText;
+
+  select.appendChild(optionElement);
+};
+
+const addFlagToCountrySelect = (country) => {
+  countryFilterSelect.className = `flag-icon-background flag-icon-${country}`;
+};
+
+const addCountriesToSelect = (countries) => {
+  countries.forEach((country) => {
+    addFlagToCountrySelect(getSelectedCountry() || countryFilterSelect.value);
+    createSelectOption(countryFilterSelect, country, countryFullName(country));
+  });
+};
+
+const setDefaultCountry = () => {
+  if (getSelectedCountry()) {
+    countryFilterSelect.value = getSelectedCountry();
+  }
+};
+
+const setupCalendar = (date) => {
+  const month = date.getMonth();
+  const year = date.getFullYear();
   const days = monthDays(date);
-  const firstWeekDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    1,
-  ).getUTCDay() + 1;
-  const dateCellElements = createCalendar(days, firstWeekDay);
+  const firstWeekDay = new Date(year, month, 1).getUTCDay() + 1;
   const allNames = {};
 
-  await dateCellElements.forEach(async (dateCellElement) => {
+  dateCellElements = createCalendar(days, firstWeekDay);
+
+  dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
-    const names = await getNames(day, date.getMonth());
+    const names = await getNames(month, day);
 
-    addNamesToDateCell(dateCellElement.element, names[day]);
+    if (names) {
+      if (!getCountries()) {
+        const countries = Object.keys(names[1]);
+        setCountries(countries);
+      }
 
-    if (!getNamesInMonth(date.getMonth())) {
-      allNames[day] = names[day];
+      addNamesToDateCell(dateCellElement.element, names[day], countryFilterSelect.value);
 
-      if (Object.keys(allNames).length === days.length) {
-        setNamesInMonth(allNames, date.getMonth());
+      if (!getNamesInMonth(month)) {
+        allNames[day] = names[day];
+
+        if (Object.keys(allNames).length === days.length) {
+          setNamesInMonth(allNames, month);
+        }
       }
     }
   });
@@ -78,8 +114,9 @@ const setMonthAndYearText = (current, previous, next) => {
 };
 
 setupCalendar(currentDate);
+addCountriesToSelect(getCountries());
+setDefaultCountry();
 setMonthAndYearText(currentDate, previousMonthDate, nextMonthDate);
-
 setSavedNamesTitle(savedNamesTitle());
 setSavedNamesListItems(getSavedNames());
 
@@ -103,4 +140,19 @@ nextMonthButton.addEventListener('click', () => {
   );
   setupCalendar(newDate);
   setMonthAndYearText(newDate, newPreviousMonthDate, newNextMonthDate);
+});
+
+countryFilterSelect.addEventListener('change', (event) => {
+  const country = event.target.value;
+  const month = currentDate.getMonth();
+
+  addFlagToCountrySelect(country);
+  setSelectedCountry(country);
+
+  dateCellElements.forEach(async (dateCellElement) => {
+    const { day } = dateCellElement;
+    const names = await getNames(month, day);
+
+    addNamesToDateCell(dateCellElement.element, names[day], country);
+  });
 });

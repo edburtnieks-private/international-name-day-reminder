@@ -4,6 +4,7 @@ const htmlmin = require('gulp-htmlmin');
 const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
 const rollup = require('gulp-better-rollup');
 const babel = require('rollup-plugin-babel');
 const resolve = require('rollup-plugin-node-resolve');
@@ -43,6 +44,7 @@ function sassDev() {
         outputStyle: 'expanded',
       }).on('error', sass.logError),
     )
+    .pipe(autoprefixer())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/css'))
     .pipe(browserSync.stream());
@@ -91,6 +93,7 @@ function sassProd() {
         outputStyle: 'compressed',
       }).on('error', sass.logError),
     )
+    .pipe(autoprefixer())
     .pipe(gulp.dest('dist/css'));
 }
 
@@ -120,6 +123,27 @@ function assets() {
     .pipe(browserSync.stream());
 }
 
+function CSSflags() {
+  return gulp
+    .src([
+      'node_modules/flag-icon-css/flags/4x3/at.svg',
+      'node_modules/flag-icon-css/flags/4x3/dk.svg',
+      'node_modules/flag-icon-css/flags/4x3/fr.svg',
+      'node_modules/flag-icon-css/flags/4x3/it.svg',
+      'node_modules/flag-icon-css/flags/4x3/sk.svg',
+      'node_modules/flag-icon-css/flags/4x3/cz.svg',
+      'node_modules/flag-icon-css/flags/4x3/es.svg',
+      'node_modules/flag-icon-css/flags/4x3/hr.svg',
+      'node_modules/flag-icon-css/flags/4x3/pl.svg',
+      'node_modules/flag-icon-css/flags/4x3/us.svg',
+      'node_modules/flag-icon-css/flags/4x3/de.svg',
+      'node_modules/flag-icon-css/flags/4x3/fi.svg',
+      'node_modules/flag-icon-css/flags/4x3/hu.svg',
+      'node_modules/flag-icon-css/flags/4x3/se.svg',
+    ])
+    .pipe(gulp.dest('dist/assets/flags/4x3'));
+}
+
 function cleanDist() {
   return del(['dist']);
 }
@@ -133,12 +157,12 @@ function watch() {
 
 const devBuild = gulp.series(
   cleanDist,
-  gulp.parallel(htmlDev, cssDev, sassDev, jsDev, assets),
+  gulp.parallel(htmlDev, cssDev, sassDev, jsDev, assets, CSSflags),
 );
 
 const prodBuild = gulp.series(
   cleanDist,
-  gulp.parallel(htmlProd, cssProd, sassProd, jsProd, assets),
+  gulp.parallel(htmlProd, cssProd, sassProd, jsProd, assets, CSSflags),
 );
 
 exports.dev = gulp.series(devBuild, server);

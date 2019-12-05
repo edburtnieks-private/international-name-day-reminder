@@ -51,11 +51,21 @@ const createDateCellElement = (day) => {
   return dateCellElement;
 };
 
-export const addNamesToDateCell = (dateCellElement, names) => {
-  if (names) {
-    const nameList = createNameList();
+export const addNamesToDateCell = (dateCellElement, names, country) => {
+  let nameList = dateCellElement.querySelector('.name-list');
 
-    names.forEach((name) => {
+  if (dateCellElement.contains(nameList)) {
+    while (nameList.firstChild) {
+      nameList.removeChild(nameList.firstChild);
+    }
+  } else {
+    nameList = createNameList();
+  }
+
+  if (names) {
+    const nameArray = names[country].split(',');
+
+    nameArray.forEach((name) => {
       const trimmedName = name.trim();
       const nameButton = createNameButton(trimmedName);
       const nameListItem = createNameListItem(name);

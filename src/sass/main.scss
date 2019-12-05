@@ -1,8 +1,12 @@
+$flag-icon-css-path: '../assets/flags';
+@import '../../node_modules/flag-icon-css/sass/flag-icon';
+
 @import 'variables';
 
 @import 'mixins/breakpoints';
 
 @import 'base/typography';
+@import 'base/inputs';
 
 @import 'common';
 

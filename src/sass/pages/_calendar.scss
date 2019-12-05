@@ -1,7 +1,12 @@
 .calendar-page {
+  .page-header{
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
   .main-content {
     display: grid;
-    grid-gap: 4rem;
+    grid-gap: 1rem 4rem;
     grid-template-columns: 300px 1fr;
   }
 
@@ -33,5 +38,20 @@
     font-weight: bold;
     margin: 0 3.5rem;
     text-align: center;
+  }
+
+  .sidebar {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .calendar-filters {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .calendar {
+    grid-column: 2;
+    grid-row: 2;
   }
 }
