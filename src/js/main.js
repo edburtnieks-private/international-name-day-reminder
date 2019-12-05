@@ -20,7 +20,12 @@ import {
   setNamesInMonth,
   getNamesInMonth,
 } from './api/name';
-import { getCountries, setCountries, getSelectedCountry, setSelectedCountry } from './api/countries';
+import {
+  getCountries,
+  setCountries,
+  getSelectedCountry,
+  setSelectedCountry,
+} from './api/countries';
 
 const currentYearElement = document.querySelector('#current-year');
 const currentMonthElement = document.querySelector('#current-month');
@@ -95,7 +100,11 @@ const setupCalendar = async (date) => {
       }
     }
 
-    addNamesToDateCell(dateCellElement.element, names[day], getSelectedCountry() || countryFilterSelect.value);
+    addNamesToDateCell(
+      dateCellElement.element,
+      names[day],
+      getSelectedCountry() || countryFilterSelect.value,
+    );
 
     if (!getNamesInMonth(month)) {
       allNames[day] = names[day];
