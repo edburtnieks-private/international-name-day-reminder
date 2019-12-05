@@ -11,7 +11,7 @@ export const setSavedNames = (names) => {
 
 export const getSavedNames = () => {
   if (localStorage.getItem('saved-names') === null) {
-    return [];
+    return {};
   }
 
   return JSON.parse(localStorage.getItem('saved-names'));
