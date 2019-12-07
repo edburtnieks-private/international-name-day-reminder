@@ -5,8 +5,10 @@
     margin: 0 0 2rem;
   }
 
-  .name-list:not(:last-child) {
-    margin-bottom: 1.5rem;
+  .name-list {
+    > ul:not(:last-of-type) {
+      margin-bottom: 1.5rem;
+    }
   }
 
   .name-list-item {
