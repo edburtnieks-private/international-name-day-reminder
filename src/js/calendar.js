@@ -1,7 +1,7 @@
 import { getSavedNames, setSavedNames } from './api/name';
 import { savedNamesTitle } from './utils/name-helpers';
 import {
-  addSavedNameToCountrySpecificList,
+  addCountryListToDateList,
   removeSavedNameFromCountrySpecificList,
   setSavedNamesTitle,
 } from './sidebar';
@@ -14,30 +14,32 @@ import {
 
 const calendar = document.querySelector('#calendar');
 
-const toggleNameSave = (nameListItem, name, country) => {
-  const names = getSavedNames();
+const toggleNameSave = (nameListItem, nameday, country) => {
+  const namedays = getSavedNames();
 
-  if (country in names) {
-    if (names[country].includes(name)) {
-      const index = names[country].indexOf(name);
-      if (index !== -1) names[country].splice(index, 1);
+  if (country in namedays) {
+    const nameArray = namedays[country].map((element) => element.name);
+    const namedayIndex = nameArray.indexOf(nameday.name);
 
-      if (!names[country].length) {
-        delete names[country];
+    if (namedayIndex !== -1) {
+      namedays[country].splice(namedayIndex, 1);
+
+      removeSavedNameFromCountrySpecificList(nameday, country);
+
+      if (!namedays[country].length) {
+        delete namedays[country];
       }
-      
-      removeSavedNameFromCountrySpecificList(name, country);
     } else {
-      names[country].push(name);
-      addSavedNameToCountrySpecificList(name, country);
+      namedays[country].push(nameday);
+      addCountryListToDateList(nameday, country);
     }
   } else {
-    names[country] = [name];
-    addSavedNameToCountrySpecificList(name, country);
+    namedays[country] = [nameday];
+    addCountryListToDateList(nameday, country);
   }
 
-  updateNameListItemStyles(nameListItem, name);
-  setSavedNames(names, country);
+  updateNameListItemStyles(nameListItem, nameday.name);
+  setSavedNames(namedays, country);
   setSavedNamesTitle(savedNamesTitle());
 };
 
@@ -60,7 +62,7 @@ const createDateCellElement = (day) => {
   return dateCellElement;
 };
 
-export const addNamesToDateCell = (dateCellElement, names, country) => {
+export const addNamesToDateCell = (dateCellElement, nameday, country) => {
   let nameList = dateCellElement.querySelector('.name-list');
 
   if (dateCellElement.contains(nameList)) {
@@ -71,23 +73,27 @@ export const addNamesToDateCell = (dateCellElement, names, country) => {
     nameList = createNameList();
   }
 
-  if (names[country]) {
-    const nameArray = names[country].split(',');
+  if (nameday.names[country]) {
+    const nameArray = nameday.names[country].split(',');
 
     nameArray.forEach((name) => {
-      const trimmedName = name.trim();
-      const nameButton = createNameButton(trimmedName);
-      const nameListItem = createNameListItem(name);
+      const nameObject = {
+        name: name.trim(),
+        day: nameday.day,
+        month: nameday.month,
+      };
+      const nameButton = createNameButton(nameObject.name);
+      const nameListItem = createNameListItem(nameObject);
 
-      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, trimmedName, country));
+      nameButton.addEventListener('click', () => toggleNameSave(nameListItem, nameObject, country));
 
-      const countries = Object.keys(getSavedNames());
-
-      countries.forEach((savedCountry) => {
-        if (getSavedNames()[savedCountry].includes(name)) {
-          nameListItem.classList.add('saved');
-        }
-      });
+      if (getSavedNames()[country]) {
+        getSavedNames()[country].forEach((savedNameday) => {
+          if (nameObject.name === savedNameday.name) {
+            nameListItem.classList.add('saved');
+          }
+        });
+      }
 
       nameListItem.appendChild(nameButton);
       nameList.appendChild(nameListItem);

@@ -35,22 +35,26 @@ const countryFilterSelect = document.querySelector('#country-filter');
 
 let dateCellElements;
 
-const getNames = async (month, day) => {
-  let names = {};
+const getNamedays = async (month, day) => {
+  let namedays = {};
 
   if (getNamesInMonth(month)) {
-    names = getNamesInMonth(month);
+    namedays = getNamesInMonth(month);
   } else {
     try {
       const response = await getNameDayByDate(month, day);
       const { data } = await response.json();
-      names[day] = data[0].namedays;
+      namedays[day] = {
+        names: data[0].namedays,
+        month: data[0].dates.month,
+        day: data[0].dates.day,
+      };
     } catch (error) {
       console.error(error);
     }
   }
 
-  return names;
+  return namedays;
 };
 
 const createSelectOption = (select, option, displayText) => {
@@ -84,17 +88,17 @@ const setupCalendar = async (date) => {
   const year = date.getFullYear();
   const days = monthDays(date);
   const firstWeekDay = new Date(year, month, 1).getUTCDay() + 1;
-  const allNames = {};
+  const allNamedays = {};
 
   dateCellElements = createCalendar(days, firstWeekDay);
 
   await dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
-    const names = await getNames(month, day);
+    const namedays = await getNamedays(month, day);
 
     if (day === 1) {
       if (!getCountries()) {
-        const countries = Object.keys(names[day]);
+        const countries = Object.keys(namedays[day].names);
         addCountriesToSelect(countries);
         setCountries(countries);
       }
@@ -102,15 +106,15 @@ const setupCalendar = async (date) => {
 
     addNamesToDateCell(
       dateCellElement.element,
-      names[day],
+      namedays[day],
       getSelectedCountry() || countryFilterSelect.value,
     );
 
     if (!getNamesInMonth(month)) {
-      allNames[day] = names[day];
+      allNamedays[day] = namedays[day];
 
-      if (Object.keys(allNames).length === days.length) {
-        setNamesInMonth(allNames, month);
+      if (Object.keys(allNamedays).length === days.length) {
+        setNamesInMonth(allNamedays, month);
       }
     }
   });
@@ -165,8 +169,8 @@ countryFilterSelect.addEventListener('change', (event) => {
 
   dateCellElements.forEach(async (dateCellElement) => {
     const { day } = dateCellElement;
-    const names = await getNames(month, day);
+    const namedays = await getNamedays(month, day);
 
-    addNamesToDateCell(dateCellElement.element, names[day], country);
+    addNamesToDateCell(dateCellElement.element, namedays[day], country);
   });
 });
