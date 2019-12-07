@@ -22,8 +22,9 @@ const createNameText = (name) => {
 };
 
 export const createNameButton = (name) => {
+  const trimmedName = name.trim();
   const nameButton = document.createElement('button');
-  const nameText = createNameText(name);
+  const nameText = createNameText(trimmedName);
   const saveIcon = createSaveIcon();
 
   nameButton.className = 'name-button';
@@ -34,12 +35,14 @@ export const createNameButton = (name) => {
   return nameButton;
 };
 
-export const createNameListItem = (name) => {
+export const createNameListItem = (nameday) => {
   const nameListItem = document.createElement('li');
-  const trimmedName = name.trim();
+  const trimmedName = nameday.name.trim();
 
   nameListItem.className = 'name-list-item';
   nameListItem.dataset.name = encodedName(trimmedName);
+  nameListItem.dataset.month = nameday.month;
+  nameListItem.dataset.day = nameday.day;
 
   return nameListItem;
 };

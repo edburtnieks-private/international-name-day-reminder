@@ -25,3 +25,8 @@ export const formatDateYear = (date) => date.toLocaleDateString('en', {
 export const formatDateMonth = (date) => date.toLocaleDateString('en', {
   month: 'long',
 });
+
+export const formatMonthDay = (date) => date.toLocaleDateString('en', {
+  month: 'long',
+  day: 'numeric',
+});
