@@ -5,10 +5,8 @@
     margin: 0 0 2rem;
   }
 
-  .name-list {
-    [data-month][data-day] {
-      margin-bottom: 1.5rem;
-    }
+  .name-list:not(:last-child) {
+    margin-bottom: 1.5rem;
   }
 
   .name-list-item {
